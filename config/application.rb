@@ -23,9 +23,6 @@ module Blog
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
-    # Admin auth token.
-    config.auth_token = ENV['BLOG_AUTH_TOKEN'] || SecureRandom.hex
-
     # Setup logging
     config.logstash.uri = ENV['REDIS_URL'] || ENV['BOXEN_REDIS_URL']
     config.log_level = :fatal

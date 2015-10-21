@@ -14,9 +14,10 @@ class ApplicationController < ActionController::Base
   end
   helper_method :logged_in?
 
-  def access_denied
-    render(status: 401, text: "access denied")
+  def admin?
+    logged_in? && current_user.admin?
   end
+  helper_method :admin?
 
   def authenticated_only
     access_denied unless logged_in?
@@ -26,24 +27,11 @@ class ApplicationController < ActionController::Base
     access_denied if logged_in?
   end
 
-  def require_admin
-    if admin?
-      session[:authed] = true
-    else
-      access_denied
-    end
+  def admin_only
+    access_denied unless admin?
   end
 
-  def admin?
-    admin_authed_by_session? || admin_authed_by_token?
-  end
-  helper_method :admin?
-
-  def admin_authed_by_session?
-    session[:admin] == true
-  end
-
-  def admin_authed_by_token?
-    Rack::Utils.secure_compare Rails.application.config.auth_token, params[:token].to_s
+  def access_denied
+    render(status: 401, text: "access denied")
   end
 end
