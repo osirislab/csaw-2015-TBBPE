@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_filter :admin_only,         only:   [:new, :create, :edit, :update]
-  before_filter :authenticated_only, only:   [:like, :dislike]
+  before_filter :admin_only,         only: [:new, :create, :edit, :update]
+  before_filter :authenticated_only, only: [:like, :dislike]
 
   def index
     @posts = Post.all
