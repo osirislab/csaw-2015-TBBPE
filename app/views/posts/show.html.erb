@@ -1,0 +1,13 @@
+<h3 class="name"><%= @post.name %></h3>
+<div class="body">
+  <%= @post.body.html_safe %>
+</div>
+<div class="votes">
+  Votes: <div class="vote-count"><%= @post.score %></div>
+  <% unless @already_voted %>
+  <div class="voting">
+    <%= link_to "like", like_post_path(@post), remote: true, method: :post, class: 'js-vote-button' %>
+    <%= link_to "dislike", dislike_post_path(@post), remote: true, method: :post, class: 'js-vote-button' %>
+  </div>
+  <% end %>
+</div>

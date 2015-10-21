@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <title>The blog.</title>
+  </head>
+  <body>
+    <div class="header">
+      <%= form_tag posts_search_path, method: "get", class: "search" do %>
+        <%= text_field_tag :q, params[:q] %>
+        <%= submit_tag("Search") %>
+      <% end %>
+      <% if logged_in? %>
+      @<%= current_user.login %>
+      <% end %>
+      <%= link_to "The blog.", root_path, class: "headline" %>
+    </div>
+    <div class="content">
+      <div class="error-flash"><%= flash[:error] %></div>
+      <div class="notice-flash"><%= flash[:notice] %></div>
+      <%= yield %>
+    </div>
+  </body>
+</html>

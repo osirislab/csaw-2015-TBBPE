@@ -1,0 +1,41 @@
+body {
+  font-family: sans-serif;
+}
+
+div.header {
+  border-bottom: medium groove black;
+}
+
+div.header .headline {
+  display: block;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 2em;
+  color: black;
+  padding: 0px 0px 10px 10px;
+}
+
+div.header .search {
+  display: inline;
+  float: right;
+}
+
+div.votes {
+  padding: 30px 0px 0px 0px;
+}
+
+div.votes .vote-count {
+  display: inline;
+}
+
+div.vote-count {
+  font-weight: bold;
+}
+
+div.error-flash {
+  color: red;
+}
+
+div.notice-flash {
+  color: green;
+}
