@@ -8,13 +8,20 @@
   </head>
   <body>
     <div class="header">
-      <%= form_tag posts_search_path, method: "get", class: "search" do %>
-        <%= text_field_tag :q, params[:q] %>
-        <%= submit_tag("Search") %>
-      <% end %>
-      <% if logged_in? %>
-      @<%= current_user.login %>
-      <% end %>
+      <div class="header-right">
+        <div class="current-user">
+          <% if logged_in? %>
+            Logged in as @<%= current_user.login %>.
+            <%= link_to "Logout", logout_path, method: :post %>
+          <% else %>
+            <%= link_to "Login", login_path %>
+          <% end %>
+        </div>
+        <%= form_tag posts_search_path, method: "get", class: "search" do %>
+          <%= text_field_tag :q, params[:q] %>
+          <%= submit_tag("Search") %>
+        <% end %>
+      </div>
       <%= link_to "The blog.", root_path, class: "headline" %>
     </div>
     <div class="content">

@@ -15,9 +15,18 @@ div.header .headline {
   padding: 0px 0px 10px 10px;
 }
 
-div.header .search {
-  display: inline;
+div.header-right {
+  display: inline-block;
   float: right;
+}
+
+div.header-right .current-user {
+  text-align: right;
+  padding-bottom: 5px;
+}
+
+div.content {
+  padding-top: 10px;
 }
 
 div.votes {

@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
-  before_filter :set_post, except: [:index, :search, :new, :create]
-  before_filter :require_admin, only: [:new, :create, :edit, :update]
+  before_filter :set_post,           except: [:index, :search, :new, :create]
+  before_filter :require_admin,      only:   [:new, :create, :edit, :update]
+  before_filter :authenticated_only, only:   [:like, :dislike]
 
   def index
     @posts = Post.all
@@ -11,7 +12,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @already_voted = @post.votes.where(user: current_user).any?
+    @already_voted = logged_in? && @post.votes.where(user: current_user).any?
   end
 
   def new

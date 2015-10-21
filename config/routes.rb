@@ -11,5 +11,9 @@ Rails.application.routes.draw do
   get    "/posts/:id/edit",       to: "posts#edit",    as: :edit_post
   patch  "/posts/:id",            to: "posts#update"
 
+  get  "/login",  to: "sessions#new",     as: :login
+  post "/login",  to: "sessions#create"
+  post "/logout", to: "sessions#destroy", as: :logout
+
   resource :users, only: %w(new create)
 end
