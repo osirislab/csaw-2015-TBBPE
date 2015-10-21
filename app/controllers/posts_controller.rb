@@ -1,6 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :set_post,           except: [:index, :search, :new, :create]
-  before_filter :admin_only,      only:   [:new, :create, :edit, :update]
+  before_filter :admin_only,         only:   [:new, :create, :edit, :update]
   before_filter :authenticated_only, only:   [:like, :dislike]
 
   def index
@@ -12,20 +11,20 @@ class PostsController < ApplicationController
   end
 
   def show
-    @already_voted = logged_in? && @post.votes.where(user: current_user).any?
+    @already_voted = logged_in? && this_post.votes.where(user: current_user).any?
   end
 
   def new
-    @post = Post.new
+    @this_post = Post.new
   end
 
   def create
-    @post = Post.create post_params
-    if @post.new_record?
-      flash.now[:error] = @post.errors.full_messages.to_sentence
+    @this_post = Post.new post_params
+    if this_post.save
+      flash.now[:error] = this_post.errors.full_messages.to_sentence
       render :new
     else
-      redirect_to post_path(@post)
+      redirect_to post_path(this_post)
     end
   end
 
@@ -33,11 +32,11 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update_attributes post_params
-      redirect_to post_path(@post)
+    if this_post.update_attributes post_params
+      redirect_to post_path(this_post)
     else
-      flash[:error] = @post.errors.full_messages.to_sentence
-      redirect_to edit_post_path(@post)
+      flash[:error] = this_post.errors.full_messages.to_sentence
+      redirect_to edit_post_path(this_post)
     end
   end
 
@@ -52,19 +51,21 @@ class PostsController < ApplicationController
   private
 
   def vote(value)
-    record = current_user.votes.new(post: @post, value: value)
+    record = current_user.votes.new(post: this_post, value: value)
     if record.save
-      render json: { error: "", votes: @post.score }
+      render json: { error: "", votes: this_post.score }
     else
-      render json: { error: record.errors.full_messages.to_sentence, votes: @post.score }
+      render json: { error: record.errors.full_messages.to_sentence, votes: this_post.score }
     end
-  end
-
-  def set_post
-    @post = Post.find_by_id(params[:id].to_i)
   end
 
   def post_params
     params.require(:post).permit(:name, :body)
   end
+
+  def this_post
+    return @this_post if defined? @this_post
+    @this_post = Post.find_by_id(params[:id].to_i)
+  end
+  helper_method :this_post
 end
