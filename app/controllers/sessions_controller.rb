@@ -16,9 +16,7 @@ class SessionsController < ApplicationController
       return render("new")
     end
 
-    @current_user = user
-    session[:user_id] = user.id
-
+    login_as(user)
     redirect_to root_path
   end
 
