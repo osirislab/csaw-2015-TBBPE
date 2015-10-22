@@ -4,7 +4,7 @@ class Post < ActiveRecord::Base
   validates :name, presence: true
   validates :body, presence: true
 
-  after_save :index_post
+  after_save :index
 
   def score
     votes.sum(:value)

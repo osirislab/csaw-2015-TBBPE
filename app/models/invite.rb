@@ -2,10 +2,12 @@ class Invite
   REDIS_KEY = "invite_nonces"
 
   def self.generate(user)
+    raise ArgumentError unless user
     new(user: user).token
   end
 
   def self.from_token(token)
+    raise ArgumentError unless token
     new(token: token)
   end
 

@@ -17,7 +17,7 @@
             <%= link_to "Login", login_path %>
           <% end %>
         </div>
-        <%= form_tag posts_search_path, method: "get", class: "search" do %>
+        <%= form_tag search_posts_path, method: "get", class: "search" do %>
           <%= text_field_tag :q, params[:q] %>
           <%= submit_tag("Search") %>
         <% end %>

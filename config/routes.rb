@@ -1,23 +1,24 @@
 Rails.application.routes.draw do
   root "posts#index"
 
-  get    "/posts",                to: "posts#index",   as: :posts
-  get    "/posts/search",         to: "posts#search",  as: :posts_search
-  get    "/posts/new",            to: "posts#new",     as: :new_post
-  get    "/posts/:id",            to: "posts#show",    as: :post
-  post   "/posts",                to: "posts#create"
-  post   "/posts/:id/like",       to: "posts#like",    as: :like_post
-  post   "/posts/:id/dislike",    to: "posts#dislike", as: :dislike_post
-  get    "/posts/:id/edit",       to: "posts#edit",    as: :edit_post
-  patch  "/posts/:id",            to: "posts#update"
+  resources :posts do
+    collection do
+      get :search
+    end
 
-  get  "/login",  to: "sessions#new",     as: :login
-  post "/login",  to: "sessions#create"
-  post "/logout", to: "sessions#destroy", as: :logout
+    member do
+      post :like
+      post :dislike
+    end
+  end
 
-  resource :users, only: %w(new create) do
+  resources :users, only: %w(new create) do
     collection do
       get :invites
     end
   end
+
+  get  "/login",  to: "sessions#new",     as: :login
+  post "/login",  to: "sessions#create"
+  post "/logout", to: "sessions#destroy", as: :logout
 end

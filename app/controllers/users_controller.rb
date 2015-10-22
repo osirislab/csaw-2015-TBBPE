@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :invite_required, only: [:new, :create]
+  before_filter :anonymous_only,  only: [:new, :create]
   before_filter :admin_only,      only: [:invites]
 
   def new
@@ -20,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def invites
-    urls = 10.times.map { new_users_url(invite: Invite.generate(current_user)) }
+    urls = 10.times.map { new_user_url(invite: Invite.generate(current_user)) }
     render plain: urls.join("\n")
   end
 
