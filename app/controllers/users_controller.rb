@@ -1,11 +1,14 @@
 class UsersController < ApplicationController
+  before_filter :invite_required, only: [:new, :create]
+  before_filter :admin_only,      only: [:invites]
+
   def new
     @user = User.new
   end
 
   def create
     @user = User.new(user_params)
-    if @user.save
+    if @user.save && invite.redeem!
       flash[:notice] = "You are now logged in as #{@user.login}"
       redirect_to "/"
     else
@@ -14,7 +17,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def invites
+    urls = 10.times.map { new_users_url(invite: Invite.generate_token) }
+    render plain: urls.join("\n")
+  end
+
   private
+
+  def invite_required
+    access_denied unless invite
+    access_denied unless invite.valid?
+  end
+
+  def invite
+    return @invite if defined? @invite
+    @invite = Invite.from_token params[:invite]
+  end
+  helper_method :invite
 
   def user_params
     params.require(:user).permit(:login, :password, :password_confirmation)

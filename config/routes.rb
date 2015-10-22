@@ -15,5 +15,9 @@ Rails.application.routes.draw do
   post "/login",  to: "sessions#create"
   post "/logout", to: "sessions#destroy", as: :logout
 
-  resource :users, only: %w(new create)
+  resource :users, only: %w(new create) do
+    collection do
+      get :invites
+    end
+  end
 end

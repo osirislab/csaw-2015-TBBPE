@@ -31,5 +31,9 @@ module Blog
     # Setup search index
     config.redis = Redis.new url: ENV['REDIS_URL'] || ENV['BOXEN_REDIS_URL']
     config.search_index = RedisSearch.new redis: config.redis
+
+    # Invites
+    config.multipass_site_key = ENV['MULTIPASS_SITE_KEY'] || SecureRandom.hex
+    config.multipass_api_key  = ENV['MULTIPASS_API_KEY'] || SecureRandom.hex
   end
 end
