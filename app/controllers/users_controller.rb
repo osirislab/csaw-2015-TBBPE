@@ -9,6 +9,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save && invite.redeem!
+      @current_user = @user
+      session[:user_id] = @user.id
       flash[:notice] = "You are now logged in as #{@user.login}"
       redirect_to "/"
     else

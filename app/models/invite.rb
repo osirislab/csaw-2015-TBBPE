@@ -50,25 +50,18 @@ class Invite
   end
 
   def generate_token
-    c = OpenSSL::Cipher::AES256.new(:CBC)
-    c.encrypt
-    c.key = Rails.application.config.crypto_key
-    iv = c.random_iv
-    payload = JSON.dump nonce: nonce, uid: uid
-    ct = c.update payload
-    ct << c.final
-    packed = [iv, ct].pack('A16A*')
-    encoded = Base64.urlsafe_encode64 packed
+    message_encryptor.encrypt_and_sign(uid: uid, nonce: nonce)
   end
 
   def parse_token
-    c = OpenSSL::Cipher::AES256.new(:CBC)
-    c.decrypt
-    c.key = Rails.application.config.crypto_key
-    packed = Base64.urlsafe_decode64 token
-    c.iv, ct = packed.unpack('A16A*')
-    pt = c.update ct
-    pt << c.final
-    JSON.load pt
+    message_encryptor.decrypt_and_verify(token)
+  end
+
+  def message_encryptor
+    @message_encryptor||= ActiveSupport::MessageEncryptor.new(
+      Rails.application.config.crypto_key,
+      'aes-256-cbc',
+      serializer: JSON
+    )
   end
 end
