@@ -33,7 +33,13 @@ module Blog
     config.search_index = RedisSearch.new redis: config.redis
 
     # Invites
-    config.multipass_site_key = ENV['MULTIPASS_SITE_KEY'] || SecureRandom.hex
+    config.multipass_site_key = ENV['MULTIPASS_SITE_KEY']
     config.multipass_api_key  = ENV['MULTIPASS_API_KEY'] || SecureRandom.hex
+
+    config.crypto_key = if ENV['CRYPTO_KEY']
+      Array(ENV['CRYPTO_KEY']).unpack('h*')
+    else
+      SecureRandom.random_bytes(32)
+    end
   end
 end

@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   end
 
   def invites
-    urls = 10.times.map { new_users_url(invite: Invite.generate_token) }
+    urls = 10.times.map { new_users_url(invite: Invite.generate(current_user)) }
     render plain: urls.join("\n")
   end
 
