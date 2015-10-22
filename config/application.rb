@@ -25,7 +25,7 @@ module Blog
 
     # Setup logging
     config.logstash.uri = ENV['REDIS_URL'] || ENV['BOXEN_REDIS_URL']
-    config.log_level = :fatal
+    config.log_level = :info
     config.autoflush_log = true
 
     # Setup search index
