@@ -25,8 +25,13 @@ module Blog
 
     # Setup logging
     config.logstash.uri = ENV['REDIS_URL'] || ENV['BOXEN_REDIS_URL']
-    config.log_level = :info
+    config.log_level = :fatal
     config.autoflush_log = true
+    LogStashLogger.configure do |config|
+      config.customize_event do |event|
+        event["request_id"] = RequestStore.store[:request_id]
+      end
+    end
 
     # Setup search index
     config.redis = Redis.new url: ENV['REDIS_URL'] || ENV['BOXEN_REDIS_URL']

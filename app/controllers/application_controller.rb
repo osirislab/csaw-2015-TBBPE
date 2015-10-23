@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  before_filter :track_request_id
 
   def login_as(user)
     @current_user = user
@@ -38,5 +39,9 @@ class ApplicationController < ActionController::Base
 
   def access_denied
     render(status: 401, text: "access denied")
+  end
+
+  def track_request_id
+    RequestStore.store[:request_id] = request.uuid
   end
 end
