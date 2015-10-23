@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 # Logging.
 gem 'logstash-logger', '~> 0.15.1'
+gem 'request_store', '~> 1.2.0'
 gem 'redis', '~> 3.2.1'
 
 # Use ActiveModel has_secure_password
