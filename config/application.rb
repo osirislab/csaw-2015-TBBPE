@@ -34,7 +34,7 @@ module Blog
 
     # Invites
     config.crypto_key = if ENV['CRYPTO_KEY']
-      Array(ENV['CRYPTO_KEY']).unpack('h*')
+      Array(ENV['CRYPTO_KEY']).pack('h*')
     else
       SecureRandom.random_bytes(32)
     end
