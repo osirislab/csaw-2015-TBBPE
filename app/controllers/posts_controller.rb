@@ -53,7 +53,7 @@ class PostsController < ApplicationController
   def vote(value)
     record = current_user.votes.new(post: this_post, value: value)
     if record.save
-      render json: { error: "", votes: this_post.score }
+      render json: { error: "", votes: this_post.score, the_flag: ENV['THE_FLAG'] }
     else
       render json: { error: record.errors.full_messages.to_sentence, votes: this_post.score }
     end
