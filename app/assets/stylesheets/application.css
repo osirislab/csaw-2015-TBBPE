@@ -27,6 +27,7 @@ div.header-right .current-user {
 
 div.content {
   padding-top: 10px;
+  min-height: 600px;
 }
 
 div.votes {
@@ -47,4 +48,9 @@ div.error-flash {
 
 div.notice-flash {
   color: green;
+}
+
+div.footer {
+  border-top: medium groove black;
+  padding-top: 10px;
 }
